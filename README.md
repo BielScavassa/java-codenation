@@ -1,2 +1,2 @@
-# condenation
-Repository to make condenation challenge
+# Codenation
+Repository to make codenation challenge
