@@ -2,7 +2,6 @@ package com.gabriel.codenation.controller;
 
 import com.gabriel.codenation.model.CypherRequestResult;
 import com.gabriel.codenation.service.CypherService;
-import com.gabriel.codenation.util.CreateJsonFile;
 import com.gabriel.codenation.util.Url;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -21,8 +20,6 @@ import org.springframework.web.client.RestTemplate;
 import java.io.File;
 import java.io.IOException;
 
-import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
-
 @RestController("Cypher")
 @RequestMapping(path = "/cypher")
 public class CypherController {
@@ -38,16 +35,15 @@ public class CypherController {
 
     @GetMapping("/search")
     public ResponseEntity<CypherRequestResult> getCypher() throws IOException {
-        String decipherText = "";
         CypherRequestResult cypherRequestResult = restTemplate.getForObject(Url.cypherUrl, CypherRequestResult.class);
         if (cypherRequestResult != null) {
-            decipherText = cypherService.decipherText(cypherRequestResult.getKeyNumbers(), cypherRequestResult.getCypher());
-            cypherRequestResult.setDecipher(decipherText);
-            cypherRequestResult.setCryptographicSummary(sha1Hex(decipherText));
-            CreateJsonFile.convertToJsonFile(cypherRequestResult);
+            cypherRequestResult = cypherService.addDecipher(cypherRequestResult);
+            cypherService.convertToJsonFile(cypherRequestResult);
             HttpResponse httpResponse = postFile(cypherRequestResult);
+
             System.out.println("Status Code: " + httpResponse.getStatusLine().getStatusCode() + "\n"
                     + "Points archived: " + httpResponse.getEntity().getContent().read());
+
         } else
             return ResponseEntity.status(HttpStatus.OK).body(new CypherRequestResult());
 

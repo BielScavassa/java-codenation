@@ -1,11 +1,31 @@
 package com.gabriel.codenation.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gabriel.codenation.model.CypherRequestResult;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.IOException;
+
+import static org.apache.commons.codec.digest.DigestUtils.sha1Hex;
 
 @Service
 public class CypherService {
 
-    public String decipherText(Integer key, String cypherText) {
+    public CypherRequestResult addDecipher(CypherRequestResult cypherRequestResult) {
+        String decipherText = decipherText(cypherRequestResult.getKeyNumbers(), cypherRequestResult.getCypher());
+        cypherRequestResult.setDecipher(decipherText);
+        cypherRequestResult.setCryptographicSummary(sha1Hex(decipherText));
+        return cypherRequestResult;
+    }
+
+    public void convertToJsonFile(CypherRequestResult cypherRequestResult) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        File file = new File("src/main/resources/answer.json");
+        mapper.writeValue(file, cypherRequestResult);
+    }
+
+    private String decipherText(Integer key, String cypherText) {
         String decryptMessage = "";
 
         for (int i = 0; i < cypherText.length(); i++) {
