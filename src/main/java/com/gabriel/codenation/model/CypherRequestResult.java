@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @lombok.Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestResult {
+public class CypherRequestResult {
 
     @JsonProperty("numero_casas")
     private Integer keyNumbers;
