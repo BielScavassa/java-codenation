@@ -10,7 +10,7 @@ public class CreateJsonFile {
 
     static final public void convertToJsonFile(CypherRequestResult cypherRequestResult) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        File file = new File("answer.json");
+        File file = new File("src/main/resources/answer.json");
         mapper.writeValue(file, cypherRequestResult);
     }
 }
