@@ -35,7 +35,7 @@ public class CypherController {
 
     @GetMapping("/search")
     public ResponseEntity<CypherRequestResult> getCypher() throws IOException {
-        CypherRequestResult cypherRequestResult = restTemplate.getForObject(Url.cypherUrl, CypherRequestResult.class);
+        CypherRequestResult cypherRequestResult = restTemplate.getForObject(Url.getCypherUrl, CypherRequestResult.class);
         if (cypherRequestResult != null) {
             cypherRequestResult = cypherService.addDecipher(cypherRequestResult);
             cypherService.convertToJsonFile(cypherRequestResult);
@@ -53,7 +53,7 @@ public class CypherController {
     private HttpResponse postFile(CypherRequestResult cypherRequestResult) throws IOException {
         //Http methods & request
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(Url.cypherUrl);
+        HttpPost httpPost = new HttpPost(Url.postCypherUrl);
         var requestEntity = new MultipartEntity();
         //Generate Files
         File answerFile = new File(getClass().getClassLoader().getResource("answer.json").getFile());
