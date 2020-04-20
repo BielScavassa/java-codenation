@@ -1,2 +1,2 @@
 # Codenation
-Repository to make codenation challenge
+Repository to make codenation java challenge
